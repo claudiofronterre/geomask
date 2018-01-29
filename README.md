@@ -1,5 +1,5 @@
 # geomask
-This R package provides functions to geostatistical analys of geomasked and aggregated spatial data. It is needed to reproduce the output of my PhD Thesis.
+This R package provides functions to geostatistical analys of geomasked and aggregated spatial data. It is needed to reproduce the output of my PhD Thesis. A website for the package is available [here](https://claudiofronterre.github.io/geomask/).
 
 ## Installation
 
