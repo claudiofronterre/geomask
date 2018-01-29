@@ -1,0 +1,23 @@
+Package: geomask
+Type: Package
+Title: Geostatistical modeling of geomasked data
+Version: 0.1.0
+Authors@R: person("Claudio", "Fronterre", email = "claudio.fronterre@lshtm.ac.uk", 
+  role = c("aut", "cre"))
+Description: This package contains several functions to fit geostatical models to geomasked data
+    (i.e. spatial data with positioanl error induced by geomasking). It contains all the
+    functions necessary to reproduce my PhD thesis. 
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Imports: geoR,
+    gstat,
+    VGAM,
+    randtoolbox,
+    sp,
+    raster,
+    flexclust
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

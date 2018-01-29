@@ -1,0 +1,60 @@
+---
+title: "Example of Quasi Monte Carlo"
+author: "Claudio Fronterrè"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+We use quasi monte carlo to solve the following integral
+\[
+E_{U^{*}\mid U,\delta}\left[Y_{i}-Y_{j}\mid U_{ij}^{*}\right] = \int_{0}^{\infty}\left[Y_{i}-Y_{j}\mid U_{ij}^{*}\right]\left[U_{ij}^{*}\mid U_{ij}\right]dU_{ij}^{*}
+\]
+where, $\left[Y_{i}-Y_{j}\mid U_{ij}^{*}\right]\sim N\left(0,2\left(\tau^{2}+\sigma^{2}\left(1-\rho\left(U_{ij}^{*};\phi\right)\right)\right)\right)$, $\left[U_{ij}^{*}\mid U_{ij}\right]\sim Rice\left(u_{ij},\sqrt{2}\delta\right)$ and $U_{ij}^{*}=\left\Vert X_{i}^{*}-X_{j}^{*}\right\Vert$. We proceed as follows:
+
+1. Decide the number of points $n$ at which we are going to evaluate the integral.
+2. Through the use of the library `randtoolbox` we generate a quasi-random low-discrepancy sequence. We choose the Halton sequence becuase it is suggested when the dimension of the integral is < 6. 
+3. Converte the sequence to the actual distribution using either calculate the quantile function of a $Rice\left(u_{ij},\sqrt{2}\delta\right)$ or the quantile function of $N\left(x_i,\delta^2\right)$ (since we can also rewrite the integral respect to the coordinates). 
+4. Compute $\frac{1}{n}\sum_{i=1}^{n}f_{Y_{i}-Y_{j}}\left(u_i^{*}\right)$ with $u_i^*$ the sequence obtained at step 3. 
+  
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(randtoolbox)
+library(geoR)
+library(VGAM)
+
+#Parameters of the model
+phi <- 0.25; kappa <- 0.5; sigma2 <- 1; nugget <- 0.2; delta <- phi*0.3; dij <- 10; yij <- 1
+
+n <- 2
+
+#First solution
+halt1 <- halton(n)
+u.star <- qrice(halt1, sigma = sqrt(2)*delta, vee = dij)
+mean(dnorm(yij, mean = 0, 
+           sd = sqrt(2*(nugget + sigma2*(1 - matern(u.star, phi = phi, kappa = kappa))))))
+
+#Second solution
+xi <- 1; yi <- 2; xj <- 11; yj <- 2
+halt2 <- halton(n, dim = 4)
+xi.star <- qnorm(halt2[,1], mean = xi, sd = delta)
+xj.star <- qnorm(halt2[,2], mean = xj, sd = delta)
+yi.star <- qnorm(halt2[,3], mean = yi, sd = delta)
+yj.star <- qnorm(halt2[,4], mean = yj, sd = delta)
+u.star <- sqrt((xi.star - xj.star)^2 + (yi.star - yj.star)^2)
+mean(dnorm(yij, mean = 0, 
+          sd = sqrt(2*(nugget + sigma2*(1 - matern(u.star, phi = phi, kappa = kappa))))))
+
+```
+
+The two implementations give the same results as expected but the second solution seems to be preferred since the computation of `qrice` takes a lot of time compared to `qnorm`. Indeed, this last version is the one implemented in the function `qmci` of the package `geomask`.  
