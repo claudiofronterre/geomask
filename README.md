@@ -6,5 +6,6 @@ This R package provides functions to geostatistical analys of geomasked and aggr
 To install the package in R and the relatives vignettes it is enough to execute the following lines of code
 
 ```r
-install.packages
+install.packages("devtools")
+devtools::install_github("claudiofronterre/geomask", dependencies = T, build_vignettes = T)
 ```

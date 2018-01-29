@@ -3,7 +3,7 @@
 #' This function provide  model based parameters estiamtion for a geostatical model when spatial data are avialable at a corarser scale than their natural resolution. It is mainly for simulation purposing and testing.
 #' @param data A numeric vector of spatial data.
 #' @param mc_points Number of Monte Carlo points to calculate the correlation matrix.
-#' @param tau.sq Numeric value for the nugger parameter \eqn{\nugget^2}.
+#' @param tau.sq Numeric value for the nugger parameter \eqn{\tau^2}.
 #' @param ncovariates Number of covariates to simulate.
 #' @param beta Values for the beta parameters.
 #' @param aggr.cell To how many cells the points should be aggregated.

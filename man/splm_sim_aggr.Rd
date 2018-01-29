@@ -13,7 +13,7 @@ splm_sim_aggr(data, mc_points = 100, tau.sq = 0, ncovariates = 2,
 
 \item{mc_points}{Number of Monte Carlo points to calculate the correlation matrix.}
 
-\item{tau.sq}{Numeric value for the nugger parameter \eqn{\nugget^2}.}
+\item{tau.sq}{Numeric value for the nugger parameter \eqn{\tau^2}.}
 
 \item{ncovariates}{Number of covariates to simulate.}
 
