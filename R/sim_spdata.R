@@ -27,7 +27,7 @@ sim_spdata <- function(locations, cov_model = "matern", cov_pars = c(1, 0.16), n
   nugget <- nugget
 
   #Prepare cholesky matrix to simulate data
-  d_true <- as.matrix(dist(locs.true))
+  d_true <- as.matrix(dist(locations))
   sigma <- diag(nugget, nrow = npts) +
     cov.spatial(d_true, cov.pars = cov_pars, cov.model = cov_model, kappa = kappa)
   L <- t(chol(sigma))
